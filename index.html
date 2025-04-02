@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>剩余考位查询</title>
+    <link rel="stylesheet" href="src/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>报考剩余名额</h1>
+        <div class="date-section">
+            <div class="exam-type">执业医师全程直通班</div>
+            <div class="date-control">
+                <span>时间：</span>
+                <input type="datetime-local" id="examDate" />
+                <button onclick="useCurrentTime()">使用当前时间</button>
+            </div>
+        </div>
+        <div class="seats-table">
+            <div class="row header">
+                <div class="cell">报考地区</div>
+                <div class="cell">安徽</div>
+                <div class="cell">北京</div>
+                <div class="cell">重庆</div>
+                <div class="cell">福建</div>
+                <div class="cell">甘肃</div>
+                <div class="cell">广东</div>
+                <div class="cell">广西</div>
+                <div class="cell">贵州</div>
+                <div class="cell">海南</div>
+                <div class="cell">河北</div>
+            </div>
+            <div class="row">
+                <div class="cell">剩余考位</div>
+                <div class="cell editable">4</div>
+                <div class="cell editable">3</div>
+                <div class="cell editable">4</div>
+                <div class="cell editable">3</div>
+                <div class="cell editable">3</div>
+                <div class="cell editable">4</div>
+                <div class="cell editable">3</div>
+                <div class="cell editable">4</div>
+                <div class="cell editable">3</div>
+                <div class="cell editable">3</div>
+            </div>
+            <div class="row header">
+                <div class="cell">报考地区</div>
+                <div class="cell">河南</div>
+                <div class="cell">湖北</div>
+                <div class="cell">湖南</div>
+                <div class="cell">青海</div>
+                <div class="cell">江西</div>
+                <div class="cell">吉林</div>
+                <div class="cell">辽宁</div>
+                <div class="cell">内蒙古</div>
+                <div class="cell">宁夏</div>
+                <div class="cell">江苏</div>
+            </div>
+            <div class="row">
+                <div class="cell">剩余考位</div>
+                <div class="cell editable">4</div>
+                <div class="cell editable">3</div>
+                <div class="cell editable">3</div>
+                <div class="cell editable">1</div>
+                <div class="cell editable">3</div>
+                <div class="cell editable">3</div>
+                <div class="cell editable">4</div>
+                <div class="cell editable">3</div>
+                <div class="cell editable">4</div>
+                <div class="cell editable">3</div>
+            </div>
+            <div class="row header">
+                <div class="cell">报考地区</div>
+                <div class="cell">上海</div>
+                <div class="cell">陕西</div>
+                <div class="cell">山西</div>
+                <div class="cell">四川</div>
+                <div class="cell">天津</div>
+                <div class="cell">新疆</div>
+                <div class="cell">西藏</div>
+                <div class="cell">云南</div>
+                <div class="cell">浙江</div>
+            </div>
+            <div class="row">
+                <div class="cell">剩余考位</div>
+                <div class="cell editable">3</div>
+                <div class="cell editable">4</div>
+                <div class="cell editable">3</div>
+                <div class="cell editable">4</div>
+                <div class="cell editable">3</div>
+                <div class="cell editable">4</div>
+                <div class="cell editable">0</div>
+                <div class="cell editable">3</div>
+                <div class="cell editable">3</div>
+            </div>
+        </div>
+        <div class="footer">
+            考位名额实况，请尽快确认报考
+        </div>
+    </div>
+    <script src="src/script.js"></script>
+</body>
+</html> 
