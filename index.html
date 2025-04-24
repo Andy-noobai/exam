@@ -1,10 +1,33 @@
-!DOCTYPE html>
+<!DOCTYPE html>
+<!-- Updated for GitHub Pages deployment -->
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>剩余考位查询</title>
     <link rel="stylesheet" href="src/styles.css">
+    <style>
+        .region-link {
+            color: #1a73e8;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .region-link:hover {
+            color: #174ea6;
+        }
+        .action-button {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 2px;
+        }
+        .action-button:hover {
+            background-color: #174ea6;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -17,88 +40,126 @@
                 <button onclick="useCurrentTime()">使用当前时间</button>
             </div>
         </div>
-        <div class="seats-table">
-            <div class="row header">
-                <div class="cell">报考地区</div>
-                <div class="cell">安徽</div>
-                <div class="cell">北京</div>
-                <div class="cell">重庆</div>
-                <div class="cell">福建</div>
-                <div class="cell">甘肃</div>
-                <div class="cell">广东</div>
-                <div class="cell">广西</div>
-                <div class="cell">贵州</div>
-                <div class="cell">海南</div>
-                <div class="cell">河北</div>
-            </div>
-            <div class="row">
-                <div class="cell">剩余考位</div>
-                <div class="cell editable">4</div>
-                <div class="cell editable">3</div>
-                <div class="cell editable">4</div>
-                <div class="cell editable">3</div>
-                <div class="cell editable">3</div>
-                <div class="cell editable">4</div>
-                <div class="cell editable">3</div>
-                <div class="cell editable">4</div>
-                <div class="cell editable">3</div>
-                <div class="cell editable">3</div>
-            </div>
-            <div class="row header">
-                <div class="cell">报考地区</div>
-                <div class="cell">河南</div>
-                <div class="cell">湖北</div>
-                <div class="cell">湖南</div>
-                <div class="cell">青海</div>
-                <div class="cell">江西</div>
-                <div class="cell">吉林</div>
-                <div class="cell">辽宁</div>
-                <div class="cell">内蒙古</div>
-                <div class="cell">宁夏</div>
-                <div class="cell">江苏</div>
-            </div>
-            <div class="row">
-                <div class="cell">剩余考位</div>
-                <div class="cell editable">4</div>
-                <div class="cell editable">3</div>
-                <div class="cell editable">3</div>
-                <div class="cell editable">1</div>
-                <div class="cell editable">3</div>
-                <div class="cell editable">3</div>
-                <div class="cell editable">4</div>
-                <div class="cell editable">3</div>
-                <div class="cell editable">4</div>
-                <div class="cell editable">3</div>
-            </div>
-            <div class="row header">
-                <div class="cell">报考地区</div>
-                <div class="cell">上海</div>
-                <div class="cell">陕西</div>
-                <div class="cell">山西</div>
-                <div class="cell">四川</div>
-                <div class="cell">天津</div>
-                <div class="cell">新疆</div>
-                <div class="cell">西藏</div>
-                <div class="cell">云南</div>
-                <div class="cell">浙江</div>
-            </div>
-            <div class="row">
-                <div class="cell">剩余考位</div>
-                <div class="cell editable">3</div>
-                <div class="cell editable">4</div>
-                <div class="cell editable">3</div>
-                <div class="cell editable">4</div>
-                <div class="cell editable">3</div>
-                <div class="cell editable">4</div>
-                <div class="cell editable">0</div>
-                <div class="cell editable">3</div>
-                <div class="cell editable">3</div>
-            </div>
+        <div class="control-panel">
+            <button onclick="addRegion()">添加地区</button>
+            <button onclick="saveChanges()">保存修改</button>
+        </div>
+        <div id="seatsTable" class="seats-table">
+            <!-- 表格将由JavaScript动态生成 -->
         </div>
         <div class="footer">
             考位名额实况，请尽快确认报考
         </div>
     </div>
+    <script>
+        // 初始数据
+        const regionsData = [
+            { region: "安徽", seats: 4, url: "https://www.example.com/anhui" },
+            { region: "北京", seats: 3, url: "https://www.example.com/beijing" },
+            { region: "重庆", seats: 4, url: "https://www.example.com/chongqing" },
+            { region: "福建", seats: 3, url: "https://www.example.com/fujian" },
+            { region: "甘肃", seats: 3, url: "https://www.example.com/gansu" },
+            { region: "广东", seats: 4, url: "https://www.example.com/guangdong" },
+            { region: "广西", seats: 3, url: "https://www.example.com/guangxi" },
+            { region: "贵州", seats: 4, url: "https://www.example.com/guizhou" },
+            { region: "海南", seats: 3, url: "https://www.example.com/hainan" },
+            { region: "河北", seats: 3, url: "https://www.example.com/hebei" },
+            { region: "河南", seats: 4, url: "https://www.example.com/henan" },
+            { region: "湖北", seats: 3, url: "https://www.example.com/hubei" },
+            { region: "湖南", seats: 3, url: "https://www.example.com/hunan" },
+            { region: "青海", seats: 1, url: "https://www.example.com/qinghai" },
+            { region: "江西", seats: 3, url: "https://www.example.com/jiangxi" },
+            { region: "吉林", seats: 3, url: "https://www.example.com/jilin" },
+            { region: "辽宁", seats: 4, url: "https://www.example.com/liaoning" },
+            { region: "内蒙古", seats: 3, url: "https://www.example.com/neimenggu" },
+            { region: "宁夏", seats: 4, url: "https://www.example.com/ningxia" },
+            { region: "江苏", seats: 3, url: "https://www.example.com/jiangsu" },
+            { region: "山东", seats: 3, url: "https://www.example.com/shandong" },
+            { region: "上海", seats: 3, url: "https://www.example.com/shanghai" },
+            { region: "陕西", seats: 4, url: "https://www.example.com/shaanxi" },
+            { region: "山西", seats: 3, url: "https://www.example.com/shanxi" },
+            { region: "四川", seats: 4, url: "https://www.example.com/sichuan" },
+            { region: "天津", seats: 3, url: "https://www.example.com/tianjin" },
+            { region: "新疆", seats: 4, url: "https://www.example.com/xinjiang" },
+            { region: "西藏", seats: 0, url: "https://www.example.com/xizang" },
+            { region: "云南", seats: 3, url: "https://www.example.com/yunnan" },
+            { region: "浙江", seats: 3, url: "https://www.example.com/zhejiang" }
+        ];
+
+        // 每行显示的列数
+        const COLS_PER_ROW = 10;
+
+        function openRegionDetails(url) {
+            window.open(url, '_blank');
+        }
+
+        function renderTable() {
+            const table = document.getElementById('seatsTable');
+            table.innerHTML = '';
+            
+            for (let i = 0; i < regionsData.length; i += COLS_PER_ROW) {
+                // 添加地区名称行
+                const headerRow = document.createElement('div');
+                headerRow.className = 'row header';
+                headerRow.innerHTML = '<div class="cell">报考地区</div>';
+                
+                // 添加考位数量行
+                const seatsRow = document.createElement('div');
+                seatsRow.className = 'row';
+                seatsRow.innerHTML = '<div class="cell">剩余考位</div>';
+                
+                // 添加当前行的地区和考位
+                for (let j = i; j < Math.min(i + COLS_PER_ROW, regionsData.length); j++) {
+                    const region = regionsData[j];
+                    
+                    // 添加地区名称（可点击链接）
+                    const regionCell = document.createElement('div');
+                    regionCell.className = 'cell';
+                    
+                    const regionLink = document.createElement('a');
+                    regionLink.className = 'region-link';
+                    regionLink.textContent = region.region;
+                    regionLink.href = 'javascript:void(0)';
+                    regionLink.onclick = () => openRegionDetails(region.url);
+                    
+                    regionCell.appendChild(regionLink);
+                    headerRow.appendChild(regionCell);
+                    
+                    // 添加考位数量和报名按钮
+                    const seatsCell = document.createElement('div');
+                    seatsCell.className = 'cell';
+                    if (region.seats > 0) {
+                        seatsCell.innerHTML = `
+                            <span class="seats-number">${region.seats}</span>
+                            <button class="action-button" onclick="openRegionDetails('${region.url}')">报名</button>
+                        `;
+                    } else {
+                        seatsCell.innerHTML = `<span class="seats-number">0</span>`;
+                    }
+                    seatsRow.appendChild(seatsCell);
+                }
+                
+                table.appendChild(headerRow);
+                table.appendChild(seatsRow);
+            }
+        }
+
+        function addRegion() {
+            regionsData.push({ 
+                region: "新地区", 
+                seats: 0,
+                url: "https://www.example.com/new-region"
+            });
+            renderTable();
+        }
+
+        function saveChanges() {
+            alert('修改已保存！');
+        }
+
+        // 初始化表格
+        renderTable();
+    </script>
     <script src="src/script.js"></script>
 </body>
 </html> 
